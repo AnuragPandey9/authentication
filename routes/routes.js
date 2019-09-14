@@ -18,14 +18,14 @@ router.post('/signIn',(req,res)=>{
     .then(result => {
       authorization.jwtTokenSign(JSON.parse(JSON.stringify(result))[0])
       .then((result)=>{
-        res.status(200).json(result)
+        res.header("Access-Control-Allow-Origin", "*");
+        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+        res.set('authorization',`Bearer ${result}`);
+        res.send("success");
       })
       .catch((error)=>{res.status(401).end(error)}) 
     })
     .catch((error)=>{res.status(401).end(error)})
-})
+});
 
-router.get('',(req,res)=>{
-    res.sendFile(process.cwd()+'/dist/authAngular/index.html');
-})
 module.exports = router;
